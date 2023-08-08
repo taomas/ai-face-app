@@ -1,9 +1,8 @@
 export default defineAppConfig({
-  pages: ["pages/home/index"],
-  entryPagePath: "pages/home/index",
+  pages: ["pages/image-entry/index", "pages/image-upload/index"],
   window: {
     backgroundTextStyle: "light",
-    navigationBarBackgroundColor: "#fff",
+    navigationBarBackgroundColor: "#ffffff",
     navigationBarTitleText: "WeChat",
     navigationBarTextStyle: "black",
   },
