@@ -69,10 +69,20 @@ export default function PageHistory() {
     <View className='page-image-upload'>
       <Image className='page-image-title' src={assets.imageTitle}></Image>
       <View className='image-upload-container'>
+        <View className='image-upload-content'>
+          {fileUrl && (
+            <Image
+              className='image-target'
+              mode='widthFix'
+              src={fileUrl}
+            ></Image>
+          )}
+          <View className='image-upload'>
+            <View className='iconfont icon-upload image-upload-icon'></View>
+            <View className='image-upload-text'>请上传照片</View>
+          </View>
+        </View>
         <Image className='image-upload-ipt' src={assets.ImageUpload}></Image>
-        {fileUrl && (
-          <Image className='image-target' mode='widthFix' src={fileUrl}></Image>
-        )}
       </View>
       <Image
         className='image-upload-btn'
