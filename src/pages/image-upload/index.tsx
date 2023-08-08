@@ -1,7 +1,7 @@
 import Taro, { useLoad } from "@tarojs/taro";
 import React, { useState } from "react";
 import { View, Image } from "@tarojs/components";
-import { uploadImage } from "../../api";
+import { handleApiUploadCos, handleApiGenerateImage } from "../../api";
 import "./index.scss";
 
 export default function PageHistory() {
@@ -32,10 +32,10 @@ export default function PageHistory() {
       // 选择成功，更新图片地址
       if (res.tempFilePaths && res.tempFilePaths.length > 0) {
         // 更新图片
-        setFileUrl(res.tempFilePaths[0]);
-
+        const tempFilePaths = res.tempFilePaths[0];
         // 触发上传文件
-        await handleUploadFile(res.tempFilePaths[0]);
+        setFileUrl(tempFilePaths);
+        await handleUploadFile(tempFilePaths);
       }
     } catch (error) {
       console.log("error", error);
@@ -51,13 +51,33 @@ export default function PageHistory() {
       });
 
       const name = path.substr(path.lastIndexOf("/") + 1);
-      await uploadImage({
+      const res = await handleApiUploadCos({
         filePath: path,
         name,
         formData: {
-          test: "111",
+          url: path,
         },
       });
+
+      if (res?.length > 0) {
+        const imageUrl = res[0]?.name;
+        if (imageUrl) {
+          const res = await handleApiGenerateImage({
+            url: imageUrl,
+          });
+
+          if (res.resultUrl) {
+            // 缓存url数据
+            Taro.setStorageSync("resultUrl", res.resultUrl);
+
+            // 跳转到结果页
+            Taro.navigateTo({
+              url: `/pages/image-result/index?url=${res.resultUrl}`,
+            });
+          }
+          console.log("handleApiGenerateImage结果：", res);
+        }
+      }
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -70,6 +90,10 @@ export default function PageHistory() {
       <Image className='page-image-title' src={assets.imageTitle}></Image>
       <View className='image-upload-container'>
         <View className='image-upload-content'>
+          <View className='image-upload'>
+            <View className='iconfont icon-upload image-upload-icon'></View>
+            <View className='image-upload-text'>请上传照片</View>
+          </View>
           {fileUrl && (
             <Image
               className='image-target'
@@ -77,10 +101,6 @@ export default function PageHistory() {
               src={fileUrl}
             ></Image>
           )}
-          <View className='image-upload'>
-            <View className='iconfont icon-upload image-upload-icon'></View>
-            <View className='image-upload-text'>请上传照片</View>
-          </View>
         </View>
         <Image className='image-upload-ipt' src={assets.ImageUpload}></Image>
       </View>

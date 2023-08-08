@@ -1,13 +1,14 @@
 import Taro from "@tarojs/taro";
 
 // baseurl地址
-const API_BASE_URL = "https://www.gptgou.com";
+const API_BASE_URL = "https://api.evaplat.com";
 
 class RequestClient {
   private getRequestUrl(url: string) {
-    if (url.includes("://")) {
+    if (url.includes("https://")) {
       return url;
     }
+
     return API_BASE_URL + url;
   }
 
@@ -42,6 +43,12 @@ class RequestClient {
   // File upload request
   async upload(url, filePath, name, formData = {}, headers = {}) {
     try {
+      console.log("触发上传：", {
+        url: this.getRequestUrl(url),
+        filePath,
+        name,
+        formData,
+      });
       const response = await Taro.uploadFile({
         url: this.getRequestUrl(url),
         filePath,

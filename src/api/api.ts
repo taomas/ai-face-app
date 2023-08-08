@@ -7,20 +7,32 @@ interface IUploadImage {
   formData?: any;
 }
 
-// 图片上传方法
-export const uploadImage = async ({
+// 图片上传到cos的方法
+export const handleApiUploadCos = async ({
   filePath = "",
   name = "",
   formData = {},
 }: IUploadImage) => {
   try {
     const response = await requestClient.upload(
-      `/image/upload`,
+      `/cos/upload`,
       filePath,
       name,
       formData
     );
-    return response.data; // 返回后端返回的数据
+    return response; // 返回后端返回的数据
+  } catch (error) {
+    console.error("上传图片异常:", error);
+    throw error;
+  }
+};
+
+// 生成动漫图片
+export const handleApiGenerateImage = async (data: any) => {
+  try {
+    const response = await requestClient.post(`/ai/face_cartoon_pic`, data);
+
+    return response; // 返回后端返回的数据
   } catch (error) {
     console.error("上传图片异常:", error);
     throw error;
