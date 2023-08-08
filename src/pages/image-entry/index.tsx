@@ -10,7 +10,7 @@ export default function PageEntry() {
   const assets = {
     imageTitle: require("../../assets/images/logo_title.png"),
     imageContent: require("../../assets/images/image_content.png"),
-    imageBtn: require("../../assets/images/image_btn_confirm.png"),
+    imageBtn: require("../../assets/images/image_btn_start.png"),
   };
 
   // 跳转到图片上传页面
