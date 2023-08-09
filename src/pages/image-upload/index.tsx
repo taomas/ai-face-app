@@ -1,5 +1,5 @@
 import Taro, { useLoad } from "@tarojs/taro";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, Image } from "@tarojs/components";
 import { handleApiUploadCos, handleApiGenerateImage } from "../../api";
 import ProgressBar from "../../components/ProgressBar/index";
@@ -26,6 +26,8 @@ export default function PageHistory() {
   const [scanProgress, setScanProgress] = useState(0);
   // 是否扫描完成
   const [isScanDone, setIsScanDone] = useState(false);
+  // 定义计时器Ref
+  const timerRef: any = useRef(null);
 
   // 触发图片选择
   const handleChooseFile = async (isReSelect = false) => {
@@ -63,12 +65,12 @@ export default function PageHistory() {
     }
   };
 
-  // 触发重新拍照上传
-  const handleReChooseFile = async () => {
-    // setIsScan(false);
+  // 触发重新加载页面
+  const handleReLoad = async () => {
+    setIsScan(false);
     setIsScanDone(false);
     setScanProgress(0);
-    await handleChooseFile();
+    setFileUrl("");
   };
 
   // 触发扫描人脸
@@ -76,12 +78,12 @@ export default function PageHistory() {
     setIsScan(true);
     // 扫描进度10s内从0到100
     let progress = 0;
-    const timer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       progress += 1;
       setScanProgress(progress);
       if (progress >= 100) {
         setIsScanDone(true);
-        clearInterval(timer);
+        clearInterval(timerRef.current);
       }
     }, 50);
   };
@@ -109,6 +111,19 @@ export default function PageHistory() {
             // 缓存url数据
             Taro.setStorageSync("resultUrl", res.resultUrl);
             setResultUrl(res.resultUrl);
+          }
+
+          if (!res.resultUrl) {
+            Taro.showModal({
+              title: "人脸扫描失败，请选择清晰的正脸照片!",
+              showCancel: false,
+              success: function (res) {
+                console.log("res", res);
+                handleReLoad();
+              },
+            });
+
+            clearInterval(timerRef.current);
           }
           console.log("handleApiGenerateImage结果：", res);
         }
