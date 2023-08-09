@@ -14,6 +14,7 @@ export default function PageHistory() {
     imageUpload: require("../../assets/images/image_upload.png"),
     imageBtn: require("../../assets/images/image_upload_btn.png"),
     imageBtnAd: require("../../assets/images/image-btn-ad.png"),
+    imageSteps: require("../../assets/images/image-steps.png"),
   };
 
   // 文件临时地址
@@ -181,7 +182,7 @@ export default function PageHistory() {
         <View className='image-upload-hint'>
           重要提示：照片仅供当次使用，生成后即删除，可放心使用。
         </View>
-        <View className='image-upload-steps'></View>
+        <Image className='image-upload-steps' src={assets.imageSteps}></Image>
       </View>
     );
   };
