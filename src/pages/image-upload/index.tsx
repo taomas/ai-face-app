@@ -18,6 +18,8 @@ export default function PageHistory() {
 
   // 文件临时地址
   const [fileUrl, setFileUrl] = useState("");
+  // 结果图片地址
+  const [resultUrl, setResultUrl] = useState("");
   // 是否开始扫描人脸
   const [isScan, setIsScan] = useState(false);
   // 扫描进度
@@ -46,9 +48,12 @@ export default function PageHistory() {
       // 选择成功，更新图片地址
       if (res.tempFilePaths && res.tempFilePaths.length > 0) {
         // 更新图片
-        const tempFilePaths = res.tempFilePaths[0];
+        const tempFilePath = res.tempFilePaths[0];
         // 触发上传文件
-        setFileUrl(tempFilePaths);
+        setFileUrl(tempFilePath);
+        console.log("setFileUrl", tempFilePath);
+        // 触发制作图片
+        handleGenerateImage(tempFilePath);
         // 开始执行扫描人脸
         handleScanFace();
         // await handleUploadFile(tempFilePaths);
@@ -82,19 +87,14 @@ export default function PageHistory() {
   };
 
   // 触发上传文件
-  const handleUploadFile = async (path) => {
+  const handleGenerateImage = async (fileUrl) => {
     try {
-      // 加载loading
-      Taro.showLoading({
-        title: "上传中...",
-      });
-
-      const name = path.substr(path.lastIndexOf("/") + 1);
+      const name = fileUrl.substr(fileUrl.lastIndexOf("/") + 1);
       const res = await handleApiUploadCos({
-        filePath: path,
+        filePath: fileUrl,
         name,
         formData: {
-          url: path,
+          url: fileUrl,
         },
       });
 
@@ -108,11 +108,7 @@ export default function PageHistory() {
           if (res.resultUrl) {
             // 缓存url数据
             Taro.setStorageSync("resultUrl", res.resultUrl);
-
-            // 跳转到结果页
-            Taro.navigateTo({
-              url: `/pages/image-result/index?url=${res.resultUrl}`,
-            });
+            setResultUrl(res.resultUrl);
           }
           console.log("handleApiGenerateImage结果：", res);
         }
@@ -120,8 +116,14 @@ export default function PageHistory() {
     } catch (error) {
       console.log("error", error);
     } finally {
-      Taro.hideLoading();
     }
+  };
+
+  // 触发跳转到结果页
+  const handleGoResultPage = () => {
+    Taro.redirectTo({
+      url: `/pages/image-result/index?url=${resultUrl}`,
+    });
   };
 
   // 渲染选择后的图片
@@ -181,7 +183,13 @@ export default function PageHistory() {
         </View>
         {isScanDone && (
           <View className='image-ad-container'>
-            <Image className='image-btn-ad' src={assets.imageBtnAd}></Image>
+            <Image
+              className='image-btn-ad'
+              src={assets.imageBtnAd}
+              onClick={() => {
+                handleGoResultPage();
+              }}
+            ></Image>
             <View
               className='image-btn-choose'
               onClick={() => {

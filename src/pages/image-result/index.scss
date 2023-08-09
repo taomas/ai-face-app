@@ -26,13 +26,21 @@
       height: 100%;
       z-index: 10;
     }
-    .image-target {
+    .image-result {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 512px;
-      max-height: 575px;
+      left: 60px;
+      top: 115px;
+      width: 634px;
+      max-height: 580px;
+      z-index: 20;
+      .image-target {
+        width: 512px;
+        max-height: 580px;
+      }
     }
   }
   .image-result-btn-regenerate {

@@ -24,7 +24,10 @@ export default function PageHistory() {
 
   // 重新返回上一页
   const handleGoBack = () => {
-    Taro.navigateBack();
+    // 返回页面重新制作
+    Taro.redirectTo({
+      url: "/pages/image-upload/index?isReSelect=true",
+    });
   };
 
   // 下载图片
@@ -51,13 +54,15 @@ export default function PageHistory() {
       <Image className='page-image-title' src={assets.imageTitle}></Image>
       <View className='image-result-container'>
         <Image className='image-result-ipt' src={assets.imageUpload}></Image>
-        {imageUrl && (
-          <Image
-            className='image-target'
-            mode='widthFix'
-            src={imageUrl}
-          ></Image>
-        )}
+        <View className='image-result'>
+          {imageUrl && (
+            <Image
+              className='image-target'
+              mode='widthFix'
+              src={imageUrl}
+            ></Image>
+          )}
+        </View>
       </View>
       <Image
         className='image-result-btn-regenerate'
