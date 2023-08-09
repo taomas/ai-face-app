@@ -25,13 +25,29 @@
       height: 600px;
       background: #564E3C;
       z-index: 1;
-      .image-target {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 512px;
-        max-height: 575px;
+      .image-upload-result {
+        width: 100%;
+        height: 100%;
+        .image-target {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 512px;
+          max-height: 575px;
+        }
+        .image-scan-line {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          height: 2px;
+          opacity: 0.6;
+          animation: scanAnimation 5s linear infinite;
+          box-shadow: 0 0 60px 0 rgba(255, 255, 0, 0.4);
+          background: linear-gradient(to bottom, rgba(255, 255, 0, 0.6), transparent);
+        }
       }
       .image-upload {
         position: absolute;
@@ -66,19 +82,70 @@
       z-index: 10;
     }
   }
-  .image-upload-btn {
-    width: 510px;
-    height: 165px;
-    animation: pulse 2s infinite;
+  .image-upload-operation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    .image-upload-btn {
+      width: 510px;
+      height: 165px;
+      animation: pulse 2s infinite;
+    }
+    .image-upload-hint {
+      width: 100vw;
+      height: 32px;
+      line-height: 32px;
+      font-size: 22px;
+      margin-top: 24px;
+      color: #000000;
+      text-align: center;
+    }
   }
-  .image-upload-hint {
-    width: 100vw;
-    height: 32px;
-    line-height: 32px;
-    font-size: 22px;
-    margin-top: 24px;
-    color: #000000;
-    text-align: center;
+  .image-progress-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    .image-progress-text {
+      width: 100%;
+      height: 48px;
+      line-height: 48px;
+      font-size: 28px;
+      color: #784742;
+      text-align: center;
+    }
+    .image-progress-bar {
+      margin-top: 8px;
+      width: 648px;
+      height: 44px;
+    }
+  }
+  .image-ad-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding-top: 30px;
+    .image-btn-ad {
+      width: 512px;
+      height: 153px;
+      animation: pulse 2s infinite;
+    }
+    .image-btn-choose {
+      margin-top: 30px;
+      width: 510px;
+      height: 30px;
+      font-size: 24px;
+      color: #000000;
+      text-align: center;
+    }
   }
 }
 
@@ -91,3 +158,11 @@
   }
 }
 
+@keyframes scanAnimation {
+  0%, 100% {
+    top: 0;
+  }
+  50% {
+    top: calc(100% - 2px);
+  }
+}
