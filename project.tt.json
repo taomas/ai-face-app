@@ -1,9 +1,13 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "AI动漫",
-  "appid": "ttf08d86306fb18e1401",
+  "projectname": "海豚漫画脸",
+  "appid": "tt8ce7fa5a13da2a0401",
   "setting": {
-    "es6": false,
+    "urlCheck": true,
+    "es6": true,
+    "enhance": false,
+    "compileHotReLoad": false,
+    "postcss": false,
     "minified": false
   }
 }

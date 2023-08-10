@@ -5,8 +5,10 @@ import { handleApiUploadCos, handleApiGenerateImage } from "../../api";
 import ProgressBar from "../../components/ProgressBar/index";
 import "./index.scss";
 
-export default function PageHistory() {
-  useLoad(async () => {});
+export default function PageImageUpload() {
+  useLoad(async () => {
+    console.log("image-upload 加载完成！");
+  });
 
   // 定义静态资源信息
   const assets = {
